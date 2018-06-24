@@ -1,11 +1,13 @@
 # threading-skillup
-1.In threading-1.main you can find a simple example of running 5 threads. Each of them is displaying number and log them to
+## Threading-1
+In threading-1.main you can find a simple example of running 5 threads. Each of them is displaying number and log them to
 the file threading-1.log after ending of loop - thread is sleeping. You can see in logs file, that threads are displaying
 data in parallel. Also in logs file you can see the comparison of multithreading display perfomance and running the same
 in one thread.
 So, as we can see in logs file -  multithreading displaying is faster, why? Because it is I/O task and each iteration there
 are call of "sleep" function. I/O in unix is working the same(for example networking, working with files and etc.)
-2.In threading-2.main you can find a simple example of using threads in fetching data via http. There are 3 different approaches -
+## Threading-2
+In threading-2.main you can find a simple example of using threads in fetching data via http. There are 3 different approaches -
 multithreading with lock, multithreading without lock and just in main thread. Each approach is calling fetch_url function
 5 times. So, as a result, we have 5*WEATHER_API_CITY_ID_LIST GET requests to third party weather API. All logs for program
 you can find in threading-2.log file. This code shows, that multithreading is a good approach, for example, when we need to get data
