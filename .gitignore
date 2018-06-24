@@ -1,0 +1,7 @@
+#IDE cache
+.idea/
+
+
+#Byte-compiled files
+__pycache__/
+*.py[cod]
