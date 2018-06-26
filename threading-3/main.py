@@ -5,44 +5,43 @@ import datetime
 
 logging.basicConfig(level=logging.DEBUG,
                     format='(%(threadName)-9s) %(message)s',
-                    filename='threading-3.log',
+                    # filename='threading-3.log',
                     filemode='w'
                     )
 
-a = 0
+city_list = ['London', 'Moscow', 'Glasgow', 'New York', 'California', 'Berlin', 'Paris']
 
 
 def consumer(cv):
-    global a
     logging.debug('Consumer thread started ... - {0}'.format(datetime.datetime.now()))
-    while True:
+    while len(city_list) > 0:
         with cv:
+            cv.acquire()
             logging.debug(
                 'Consumer waiting ... - {0}'.format(
                     datetime.datetime.now()
                 )
             )
             cv.wait()
-            a += 1
-            logging.debug('Consumer consumed the resource a={0} - {1}'.format(a, datetime.datetime.now()))
-            time.sleep(1)
+            element = city_list.pop()
+            logging.debug('Consumer consumed the resource element={0} - {1}'.format(element, datetime.datetime.now()))
+            cv.release()
 
 
 def producer(cv):
     logging.debug('Producer thread started ... - {0}'.format(datetime.datetime.now()))
-    while True:
+    while len(city_list) > 0:
         with cv:
-            logging.debug('Making resource available - {0}'.format(datetime.datetime.now()))
-            logging.debug('Notifying to all consumers - {0}'.format(datetime.datetime.now()))
-            cv.notifyAll()
-        time.sleep(10)
+            logging.debug('Notifying to consumer - {0}'.format(datetime.datetime.now()))
+            cv.notify()
+        time.sleep(0.5)
 
 
 if __name__ == '__main__':
     condition = threading.Condition()
     threads = []
-    for i in range(2):
-        cs = threading.Thread(target=consumer, name='CONSUMER-{}'.format(i), args=(condition,), daemon=True)
+    for i in range(3):
+        cs = threading.Thread(target=consumer, name='CONSUMER-{}'.format(i), args=(condition,))
         threads.append(cs)
 
     for i in threads:
@@ -50,6 +49,12 @@ if __name__ == '__main__':
 
     time.sleep(3)
 
-    pd = threading.Thread(target=producer, name='PRODUCER', args=(condition,), daemon=True)
+    pd = threading.Thread(target=producer, name='PRODUCER', args=(condition,))
     pd.start()
-    time.sleep(30)
+
+    # while len(city_list) > 0:
+    #     time.sleep(1)
+    threads.append(pd)
+    for thread in threads:
+        print('joined!')
+        thread.join()
