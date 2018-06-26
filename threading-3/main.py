@@ -5,7 +5,8 @@ import datetime
 
 logging.basicConfig(level=logging.DEBUG,
                     format='(%(threadName)-9s) %(message)s',
-                    filename='threading-3.log'
+                    filename='threading-3.log',
+                    filemode='w'
                     )
 
 a = 0

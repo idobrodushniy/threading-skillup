@@ -3,7 +3,12 @@ import threading
 from datetime import datetime
 from time import sleep
 
-logging.basicConfig(filename='threading-1.log', level=logging.DEBUG, filemode='w')
+logging.basicConfig(
+    filename='threading-1.log',
+    level=logging.DEBUG,
+    filemode='w',
+    format='(%(threadName)-9s) %(message)s'
+)
 
 
 def log_finished_chunk_interval(label: str, interval):
