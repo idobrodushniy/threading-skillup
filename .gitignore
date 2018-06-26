@@ -5,3 +5,9 @@
 #Byte-compiled files
 __pycache__/
 *.py[cod]
+
+#log-files
+**/*.log
+
+#results-files
+**/*.txt

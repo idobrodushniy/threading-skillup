@@ -16,7 +16,12 @@ PATHES_LIST = [WITH_LOCK_RESULTS_PATH, WITHOUT_LOCK_RESULTS_PATH, MAIN_THREAD_RE
 
 logging.getLogger("requests").setLevel(logging.ERROR)
 logging.getLogger("urllib3").setLevel(logging.ERROR)
-logging.basicConfig(filename='threading-2.log', level=logging.DEBUG, filemode='w')
+logging.basicConfig(
+    filename='threading-2.log',
+    level=logging.DEBUG,
+    filemode='w',
+    format='(%(threadName)-9s) %(message)s'
+)
 
 
 def log_finished_chunk_interval(label: str, interval: datetime.timedelta):
@@ -51,7 +56,8 @@ def fetch_url(city_id_list: list, filename: str, lock: threading.RLock = None):
         if lock:
             lock.release()
 
-def call_in_threads(filename, task_type:str, lock: threading.RLock=None,):
+
+def call_in_threads(filename, task_type: str, lock: threading.RLock = None, ):
     threads_list = []
     in_threads_started = datetime.datetime.now()
 
@@ -65,6 +71,7 @@ def call_in_threads(filename, task_type:str, lock: threading.RLock=None,):
 
     in_threads_finished = datetime.datetime.now()
     log_finished_chunk_interval(task_type, in_threads_finished - in_threads_started)
+
 
 if __name__ == '__main__':
     for path in PATHES_LIST:
